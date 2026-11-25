@@ -6,9 +6,7 @@ Console.OutputEncoding = Encoding.UTF8;
 
 try
 {
-    string settingsPath = args.Length > 0
-        ? args[0]
-        : Path.Combine(AppContext.BaseDirectory, "settings.json");
+    string settingsPath = Path.Combine(AppContext.BaseDirectory, "settings.json");
 
     IGameSettingsProvider settingsProvider = new JsonGameSettingsProvider(settingsPath);
     GameSettings settings = settingsProvider.Load();

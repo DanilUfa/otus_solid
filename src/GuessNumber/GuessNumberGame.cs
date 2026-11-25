@@ -1,18 +1,11 @@
 namespace GuessNumber;
 
-public enum GameResult
-{
-    Won,
-    Lost,
-    Cancelled
-}
-
 public sealed class GuessNumberGame(
     ISecretNumberGenerator generator,
     IGameInput input,
     IGameOutput output)
 {
-    public GameResult Play(GameSettings settings)
+    public void Play(GameSettings settings)
     {
         int secret = generator.Generate(settings.MinNumber, settings.MaxNumber);
         output.WriteLine($"Угадайте число от {settings.MinNumber} до {settings.MaxNumber} включительно.");
@@ -26,7 +19,7 @@ public sealed class GuessNumberGame(
             if (line is null)
             {
                 output.WriteLine("Ввод завершён. Игра остановлена.");
-                return GameResult.Cancelled;
+                return;
             }
 
             if (!int.TryParse(line, out int guess))
@@ -45,13 +38,12 @@ public sealed class GuessNumberGame(
             if (guess == secret)
             {
                 output.WriteLine($"Угадали! Использовано попыток: {attemptsUsed}.");
-                return GameResult.Won;
+                return;
             }
 
             output.WriteLine(guess < secret ? "Загаданное число больше." : "Загаданное число меньше.");
         }
 
         output.WriteLine($"Попытки закончились. Загаданное число: {secret}.");
-        return GameResult.Lost;
     }
 }
